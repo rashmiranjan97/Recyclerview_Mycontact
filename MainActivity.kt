@@ -1,8 +1,9 @@
 package com.example.attempt1
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -10,15 +11,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
-import java.util.ArrayList
 import kotlinx.android.synthetic.main.activity_main.*
-
-import kotlinx.android.synthetic.main.cutsom_layout.*
 import kotlinx.android.synthetic.main.cutsom_layout.view.*
-
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
+
+    private var recyclerView: RecyclerView? = null
+
 
 
 
@@ -26,21 +27,18 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val recyclerView = findViewById<View>(R.id.recycleView) as RecyclerView
+        recyclerView = findViewById<View>(R.id.recycleView) as RecyclerView
 
+        var myAdapter: MYAdapter
 
-
-
-
-        var myAdapter: Myadapter
-        var namelist: ArrayList<String>
-        var numlist: ArrayList<String>
-
-
+        val namelist: ArrayList<String> = ArrayList(10)
+        val numlist: ArrayList<String> = ArrayList(10)
 
 
 
         fab.setOnClickListener {
+
+//            Log.v("name","fab activyyyyyyyyyyyyyyyyyyyyyy")
 
 
             val DialogView = LayoutInflater.from(this).inflate(R.layout.cutsom_layout, null)
@@ -49,32 +47,26 @@ class MainActivity : AppCompatActivity() {
                 .setTitle("ADD CONTACT")
             val AlertDialog = Builder.show()
 
-            val name = findViewById<EditText>(R.id.name1)
-            val number = findViewById<EditText>(R.id.number1)
+            val nameet = DialogView.findViewById<EditText>(R.id.nameet)
+            val numberet = DialogView.findViewById<EditText>(R.id.numberet)
 
-
-
-            namelist = ArrayList(10)
-            numlist = ArrayList(10)
-
-
+            myAdapter = MYAdapter(namelist,numlist)
+            recyclerView!!.setHasFixedSize(true)
+            recyclerView!!.layoutManager = LinearLayoutManager(this)
+            recyclerView!!.adapter = myAdapter
 
             DialogView.save.setOnClickListener {
 
 
+                namelist.add(nameet?.text.toString())
+                numlist.add(numberet?.text.toString())
 
-
-                myAdapter = Myadapter(namelist, numlist)
-                recyclerView.setHasFixedSize(true)
-                recyclerView.layoutManager = LinearLayoutManager(this)
-                recyclerView.adapter = myAdapter
-                namelist.add(name?.text.toString())
-                numlist.add(number?.text.toString())
+//                Log.v("EditText","adddeeeeeedddddddddddd"+nameet?.text.toString())
 
                 AlertDialog.dismiss()
 
-                name?.setText("")
-                number?.setText("")
+                nameet?.setText("")
+                numberet?.setText("")
 
 
 
@@ -85,14 +77,14 @@ class MainActivity : AppCompatActivity() {
 
 }
 
-private class Myadapter(internal var namelist: ArrayList<String>, internal var numlist: ArrayList<String>) :
-    RecyclerView.Adapter<Myadapter.NameHolder>() {
-
+private  class MYAdapter(internal var namelist: ArrayList<String>, internal var numlist: ArrayList<String>) :
+    RecyclerView.Adapter<MYAdapter.NameHolder>() {
     override fun getItemCount(): Int {
         return namelist.size
-        return numlist.size
+
     }
 
+    @SuppressLint("InflateParams")
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NameHolder {
         val inflater = LayoutInflater.from(parent.context)
         val v = inflater.inflate(R.layout.contacts, null)
@@ -100,15 +92,18 @@ private class Myadapter(internal var namelist: ArrayList<String>, internal var n
     }
 
     override fun onBindViewHolder(holder: NameHolder, position: Int) {
+
         val nm = namelist[position]
         val nmb = numlist[position]
         holder.nmt.text = nm
         holder.nmbt.text = nmb
+//        Log.v("name",""+nm)
+
     }
 
     internal inner class NameHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var nmt: TextView = itemView.findViewById<View>(R.id.myname) as TextView
-        var nmbt: TextView = itemView.findViewById<View>(R.id.mynumber) as TextView
+        var nmt: TextView = itemView.findViewById<View>(R.id.mynametv) as TextView
+        var nmbt: TextView = itemView.findViewById<View>(R.id.mynumbertv) as TextView
 
     }
 }
