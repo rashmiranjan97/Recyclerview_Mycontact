@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
 //            Log.v("name","fab activyyyyyyyyyyyyyyyyyyyyyy")
 
 
-            val DialogView = LayoutInflater.from(this).inflate(R.layout.cutsom_layout, null)
+            val DialogView = LayoutInflater.from(this).inflate(R.layout.custom_layout, null)
             val Builder = AlertDialog.Builder(this)
                 .setView(DialogView)
                 .setTitle("ADD CONTACT")
